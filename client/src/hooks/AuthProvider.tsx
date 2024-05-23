@@ -1,9 +1,8 @@
-import { Session, User } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 import { useContext, useState, useEffect, createContext } from "react";
 import { supabaseClient } from "../util/supabaseClient";
 import { toast } from "react-toastify";
 
-// create a context for authentication
 const AuthContext = createContext<{
   session: Session | null | undefined;
   token: string | null | undefined;
@@ -61,7 +60,6 @@ export const AuthProvider = ({ children }: any) => {
     token: session?.access_token
   };
 
-  // use a provider to pass down the value
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
@@ -69,7 +67,6 @@ export const AuthProvider = ({ children }: any) => {
   );
 };
 
-// export the useAuth hook
 export const useAuth = () => {
   return useContext(AuthContext);
 };

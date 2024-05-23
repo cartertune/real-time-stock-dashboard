@@ -15,7 +15,7 @@ interface Stock {
 
 
 function Dashboard() {
-  const { signOut, session } = useAuth()
+  const { signOut } = useAuth()
   const [stockTicker, setStockTicker] = useState<string>('');
 
   const { data: watchlist, loading, refetch: refetchWatchList } = useFetchWatchList()

@@ -34,7 +34,6 @@ function Login() {
     </div>
     <div className="right">
       <img src="https://ei.marketwatch.com/Multimedia/2018/01/16/Photos/ZH/MW-GB791_1987_20180116114150_ZH.jpg?uuid=26b11c5a-fadc-11e7-a961-9c8e992d421e" alt="" className="background-img" />
-      {/* <img src="" alt="" className="logo" /> */}
       <img src="./stockbase-logo.png" className="stockbase-logo" alt="logo" />
       <div className="subtitle">
         <h2 className="primary">More gains.</h2>

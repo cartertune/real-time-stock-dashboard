@@ -10,7 +10,6 @@ const useKeyPress = (key: string, action: () => void) => {
 
     window.addEventListener('keydown', handleKeyDown);
 
-    // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
