@@ -39,7 +39,9 @@ yarn start
 ```
 
 The server should be running on port 8080.
-The client should be running on port 3000.
+[The client should be running on port 3000.
+](http://localhost:3000/)
+
 
 You can use the following accounts to login:
 test@test.com (some prefilled data)
