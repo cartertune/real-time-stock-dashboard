@@ -23,6 +23,8 @@ cd stockbase
 
 ### 2. Run the application
 
+I included .env variables in the repo, so it should work without needing to add them
+
 ```bash
 cd server
 yarn install
