@@ -1,7 +1,9 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
+const WebSocket = require("ws");
 const cors = require("cors");
-const { supabaseJWT, supabase } = require("./supabaseClient");
+const { authenticateRequest, verifyToken } = require("./util");
+const { fetchStockPrices } = require("./finnhubService");
+const { supabase } = require("./supabaseClient");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -9,31 +11,54 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors());
 
-const authenticate = (req, res, next) => {
-  try {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
-    if (!token) {
-      throw new Error();
+// ------- Stock Price Websocket --------------------
+
+const wss = new WebSocket.Server({ server });
+wss.on("connection", (ws, req) => {
+  const token = req.url.split("token=")[1];
+  const user = verifyToken(token);
+
+  if (!user) {
+    ws.close(1008, "Unauthorized");
+    return;
+  }
+
+  const fetchAndEmitPrices = async () => {
+    const { data: watchlist, error } = await supabase
+      .from("watchlist")
+      .select("stock_ticker")
+      .eq("user_id", user.sub);
+
+    if (error) {
+      ws.send(JSON.stringify({ error: "Failed to fetch watchlist" }));
+      return;
     }
 
-    const decoded = jwt.verify(token, supabaseJWT);
-    req.user = decoded;
+    const tickers = watchlist.map((item) => item.stock_ticker);
+    const prices = await fetchStockPrices(tickers);
 
-    next();
-  } catch (err) {
-    res.status(401).send("Please authenticate");
-  }
-};
+    ws.send(JSON.stringify({ prices }));
+  };
 
-app.get("/watchlist", authenticate, async (req, res) => {
-  console.log("GET /watchlist", req.headers.authorization, req.user.sub);
+  fetchAndEmitPrices();
+  const intervalId = setInterval(fetchAndEmitPrices, 2000);
 
+  ws.on("close", () => {
+    clearInterval(intervalId);
+  });
+});
+
+// ------- Stock Watchlist Endpoints --------------------
+app.get("/watchlist", authenticateRequest, async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("watchlist")
       .select("*")
-      .eq("user_id", req.user.sub);
+      .eq("user_id", req.user?.sub);
 
     if (error) {
       return res
@@ -47,7 +72,7 @@ app.get("/watchlist", authenticate, async (req, res) => {
   }
 });
 
-app.post("/watchlist", authenticate, async (req, res) => {
+app.post("/watchlist", authenticateRequest, async (req, res) => {
   const { ticker } = req.body;
 
   if (!ticker) {
@@ -57,7 +82,7 @@ app.post("/watchlist", authenticate, async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("watchlist")
-      .insert([{ stock_ticker: ticker, user_id: req.user.sub }]);
+      .insert([{ stock_ticker: ticker, user_id: req.user?.sub }]);
 
     if (error) {
       return res.status(500).json({
@@ -70,8 +95,4 @@ app.post("/watchlist", authenticate, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });

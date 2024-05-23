@@ -38,6 +38,12 @@ h4 {
   margin: 0;
 }
 
+p {
+  color: #060e1c;
+  margin: 0;
+  font-size: 16px;
+}
+
 .secondary_text {
   color: #ea5356;
 }
@@ -61,6 +67,11 @@ button {
 
   &:hover {
     opacity: 0.85;
+  }
+
+  &:disabled {
+    opacity: 0.85;
+    cursor: default;
   }
 }
 

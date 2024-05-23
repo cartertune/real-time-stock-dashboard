@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import _ from "lodash"
+import { useAuth } from "../../hooks/AuthProvider";
 import { Navigate } from "react-router-dom";
 import Input from "../../components/Input";
 import './login.css'
@@ -10,17 +11,14 @@ function Login() {
   const [password, setPassword] = useState<string>('')
 
   const handleLogin = useCallback(() => {
-    // log button clicks
-
-    // TODO: Handle Errors
     signIn(email, password)
   }, [email, password, signIn])
-
-  //TODO: On "enter key event", signIN
 
   if (session) {
     return <Navigate to={'/'} />
   }
+
+  const disableLogin = _.isEmpty(email) || _.isEmpty(password)
 
   return <div className="login-page">
     <div className="left">
@@ -28,7 +26,7 @@ function Login() {
         <h3>Sign In</h3>
         <Input value={email} onChange={setEmail} label="Email" type="email" />
         <Input value={password} onChange={setPassword} label="Password" type="password" />
-        <button onClick={handleLogin}>Sign In</button>
+        <button onClick={handleLogin} disabled={disableLogin}>Sign In</button>
       </div>
     </div>
     <div className="right">

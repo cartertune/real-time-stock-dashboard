@@ -73,5 +73,19 @@
     tbody tr:last-child {
       border: none;
     }
+
+    .price {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        font-size: 13px;
+        color: green;
+
+        &.red {
+          color: red;
+        }
+      }
+    }
   }
 }

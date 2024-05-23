@@ -1,16 +1,16 @@
 import { Session, User } from "@supabase/supabase-js";
 import { useContext, useState, useEffect, createContext } from "react";
 import { supabaseClient } from "../util/supabaseClient";
+import { toast } from "react-toastify";
 
 // create a context for authentication
 const AuthContext = createContext<{
   session: Session | null | undefined;
   user: User | null | undefined;
+  token: string | null | undefined;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
-}>({ session: null, user: null, signIn: () => Promise.resolve(), signOut: () => { } });
-
-// TODO: Add login
+}>({ session: null, user: null, token: null, signIn: () => Promise.resolve(), signOut: () => { } });
 
 export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<User>();
@@ -24,7 +24,10 @@ export const AuthProvider = ({ children }: any) => {
         error,
       } = await supabaseClient.auth.getSession();
 
-      if (error) { } //TODO:  handle Error;
+      if (error) {
+        toast.error('Error getting user info')
+        return;
+      }
 
       setSession(session);
       setUser(session?.user);
@@ -48,6 +51,11 @@ export const AuthProvider = ({ children }: any) => {
 
   const signIn = async (email: string, password: string) => {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password })
+
+    if (error) {
+      toast.error(error.message)
+      return;
+    }
   }
 
   const value = {
@@ -55,6 +63,7 @@ export const AuthProvider = ({ children }: any) => {
     user,
     signIn,
     signOut: () => supabaseClient.auth.signOut(),
+    token: session?.access_token
   };
 
   // use a provider to pass down the value

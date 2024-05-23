@@ -14,12 +14,10 @@ export const getSession = async () => {
   return session;
 };
 
-export async function fetchStockWatchlist() {
-  const session = await getSession();
-
+export async function fetchStockWatchlist(token: string) {
   const res = await axiosInstance.get("watchlist", {
     headers: {
-      Authorization: `Bearer ${session?.access_token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -29,23 +27,13 @@ export async function fetchStockWatchlist() {
 export async function addStockToWatchlist(ticker: string) {
   const session = await getSession();
 
-  await axiosInstance
-    .post(
-      "watchlist",
-      { ticker },
-      {
-        headers: {
-          Authorization: session?.access_token,
-        },
-      }
-    )
-    .then((response) => {
-      console.log("Stock added successfully!", response.data);
-    })
-    .catch((error) => {
-      console.error(
-        "Failed to add stock:",
-        error.response?.data || error.message
-      );
-    });
+  return axiosInstance.post(
+    "watchlist",
+    { ticker },
+    {
+      headers: {
+        Authorization: session?.access_token,
+      },
+    }
+  );
 }
