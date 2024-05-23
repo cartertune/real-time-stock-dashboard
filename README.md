@@ -29,8 +29,10 @@ I included .env variables in the repo, so it should work without needing to add 
 cd server
 yarn install
 yarn dev
+```
+[open new tab]
 
-
+```bash
 cd ../client
 yarn install
 yarn start
