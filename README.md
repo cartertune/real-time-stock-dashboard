@@ -5,7 +5,7 @@ This application allows users to manage a watchlist of stock tickers and receive
 ## Features
 
 - User authentication and session management with Supabase
-- Real-time stock price updates using Alpha Vantage
+- Real-time stock price updates using Finnhub
 - Add, view, and delete stock tickers from the watchlist
 
 ## Prerequisites
