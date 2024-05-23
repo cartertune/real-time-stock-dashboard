@@ -1,0 +1,29 @@
+.dashboard-page {
+  background-color: #fafafa;
+  min-height: 100vh;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 24px 48px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .content {
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    align-items: center;
+
+    .input-button-container {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+
+      button {
+        height: 38px;
+      }
+    }
+  }
+}

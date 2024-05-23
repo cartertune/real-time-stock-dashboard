@@ -1,0 +1,52 @@
+.login-page {
+  display: flex;
+  height: 100vh;
+
+  > .left {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .sign-in-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 12px;
+    }
+
+    button {
+      width: 100%;
+      max-width: 360px;
+      margin-top: 24px;
+    }
+  }
+
+  > .right {
+    position: relative;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    flex: 1;
+    padding: 128px;
+    text-align: center;
+
+    .stockbase-logo {
+      margin-bottom: 96px;
+    }
+  }
+}
+
+.background-img {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  z-index: -1;
+}

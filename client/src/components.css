@@ -1,0 +1,32 @@
+/* All component stylings */
+
+.input {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  gap: 4px;
+
+  .label {
+    color: rgb(126, 133, 142);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  input {
+    font-size: 14px;
+    border: 1px solid rgb(226, 226, 234);
+    border-radius: 4px;
+    height: 20px;
+    max-width: 100%;
+    width: 344px;
+    padding: 8px;
+
+    &:hover {
+      border-color: #000;
+    }
+  }
+}
+
+.stockbase-logo {
+  width: 245px;
+}
