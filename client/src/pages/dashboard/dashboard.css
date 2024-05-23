@@ -1,5 +1,5 @@
 .dashboard-page {
-  background-color: #fafafa;
+  background-color: rgb(247, 249, 250);
   min-height: 100vh;
 
   .header {
@@ -15,6 +15,7 @@
     padding: 24px;
     flex-direction: column;
     align-items: center;
+    gap: 24px;
 
     .input-button-container {
       display: flex;
@@ -24,6 +25,53 @@
       button {
         height: 38px;
       }
+    }
+  }
+
+  .watchlist {
+    width: 100%;
+    max-width: 475px;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background-color: #fff;
+    border-left: 1px solid rgb(231, 233, 234);
+    border-right: 1px solid rgb(231, 233, 234);
+
+    th {
+      background-color: rgb(247, 249, 250);
+      padding: 10px;
+      font-size: 13px;
+      border: 1px solid rgb(231, 233, 234);
+      color: rgb(121, 123, 137);
+    }
+
+    thead th:first-child {
+      border-right: 0;
+    }
+
+    thead th:last-child {
+      border-left: 0;
+    }
+
+    td {
+      padding: 12px;
+      text-align: center;
+
+      &.price {
+        h4 {
+          color: rgb(121, 123, 137);
+          font-weight: 500;
+        }
+      }
+    }
+
+    tbody tr td {
+      border-bottom: 1px solid rgb(231, 233, 234);
+    }
+
+    tbody tr:last-child {
+      border: none;
     }
   }
 }

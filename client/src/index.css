@@ -30,6 +30,14 @@ h3 {
   margin: 0;
 }
 
+h4 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #171e28;
+  margin: 0;
+}
+
 .secondary_text {
   color: #ea5356;
 }

@@ -1,14 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import _ from 'lodash'
 import { useAuth } from "../../context/AuthProvider";
-import './dashboard.css'
 import Input from "../../components/Input";
+import { addStockToWatchlist, fetchStockWatchlist } from "../../api/watchlist";
+import './dashboard.css'
+
+interface Stock {
+  id: string;
+  stock_ticker: string;
+}
 
 function Dashboard() {
   const { signOut } = useAuth()
   const [stockTicker, setStockTicker] = useState<string>('');
+  const [watchlist, setWatchList] = useState([])
 
-  const handleAddStock = () => {
+  useEffect(() => {
+    fetchStockWatchlist()
+      .then(watchlist => setWatchList(watchlist));
+  }, [])
 
+
+  const handleAddStock = async () => {
+    await addStockToWatchlist(stockTicker);
+    fetchStockWatchlist()
+      .then(watchlist => setWatchList(watchlist));
+
+    // If Success, show toast, and clear
+    setStockTicker('')
+
+    // If failure, show error
   }
 
   return (
@@ -22,6 +43,23 @@ function Dashboard() {
           <Input value={stockTicker} onChange={setStockTicker} label="Stock Ticker" type="text" placeholder="Ticker (i.e MSFT, NVDA)" />
           <button onClick={handleAddStock}>Add Stock</button>
         </div>
+        <table className="watchlist">
+          <thead>
+            <tr>
+              <th>TICKER</th>
+              <th>PRICE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {_.map(watchlist, (stock: Stock) => {
+              return (
+                <tr key={stock.id}>
+                  <td><h4>{stock.stock_ticker}</h4></td>
+                  <td className="price"><h4>$4.86</h4></td>
+                </tr>)
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
