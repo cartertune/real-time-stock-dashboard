@@ -6,14 +6,12 @@ import { toast } from "react-toastify";
 // create a context for authentication
 const AuthContext = createContext<{
   session: Session | null | undefined;
-  user: User | null | undefined;
   token: string | null | undefined;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
-}>({ session: null, user: null, token: null, signIn: () => Promise.resolve(), signOut: () => { } });
+}>({ session: null, token: null, signIn: () => Promise.resolve(), signOut: () => { } });
 
 export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<User>();
   const [session, setSession] = useState<Session | null>();
   const [loading, setLoading] = useState(true);
 
@@ -30,14 +28,12 @@ export const AuthProvider = ({ children }: any) => {
       }
 
       setSession(session);
-      setUser(session?.user);
       setLoading(false);
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
-        setUser(session?.user);
         setLoading(false);
       }
     );
@@ -60,7 +56,6 @@ export const AuthProvider = ({ children }: any) => {
 
   const value = {
     session,
-    user,
     signIn,
     signOut: () => supabaseClient.auth.signOut(),
     token: session?.access_token

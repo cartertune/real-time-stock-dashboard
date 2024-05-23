@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/AuthProvider";
 import { Navigate } from "react-router-dom";
 import Input from "../../components/Input";
 import './login.css'
+import useKeyPress from "../../hooks/useKeyPress";
 
 function Login() {
   const { signIn, session } = useAuth();
@@ -13,6 +14,8 @@ function Login() {
   const handleLogin = useCallback(() => {
     signIn(email, password)
   }, [email, password, signIn])
+
+  useKeyPress('Enter', handleLogin)
 
   if (session) {
     return <Navigate to={'/'} />
@@ -24,8 +27,8 @@ function Login() {
     <div className="left">
       <div className="sign-in-form">
         <h3>Sign In</h3>
-        <Input value={email} onChange={setEmail} label="Email" type="email" />
-        <Input value={password} onChange={setPassword} label="Password" type="password" />
+        <Input value={email} onChange={setEmail} label="Email" type="email" placeholder="test1@test.com" />
+        <Input value={password} onChange={setPassword} label="Password" type="password" placeholder="password" />
         <button onClick={handleLogin} disabled={disableLogin}>Sign In</button>
       </div>
     </div>
