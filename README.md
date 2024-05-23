@@ -17,7 +17,7 @@ This application allows users to manage a watchlist of stock tickers and receive
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/stock-watchlist-app.git
+git clone https://github.com/cartertune/stockbase.git
 cd stockbase
 ```
 
